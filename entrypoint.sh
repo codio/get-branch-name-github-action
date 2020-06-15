@@ -1,7 +1,7 @@
 #!/bin/bash
 
 declare -A TAGS_MAP
-TAGS_MAP=( ["master"]="latest" ["development"]="development")
+TAGS_MAP=( ["master"]="master")
 
 BRANCH=$(echo ${GITHUB_REF} | sed -e "s/refs\/heads\///g")
 TAG=${TAGS_MAP[$BRANCH]}
