@@ -11,5 +11,5 @@ if [ $(echo ${GITHUB_REF} | sed -e "s/refs\/tags\///g") != ${GITHUB_REF} ]; then
   TAG="latest"
 fi;
 
-echo "::set-output name=branch::${BRANCH}"
-echo "::set-output name=tag::${TAG}"
+echo "branch=${BRANCH}" >> ${GITHUB_OUTPUT}
+echo "tag=${TAG}" >> ${GITHUB_OUTPUT}
