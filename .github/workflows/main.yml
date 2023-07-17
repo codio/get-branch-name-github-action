@@ -7,6 +7,6 @@ jobs:
     steps:
     - name: Use action
       id: get-branch
-      uses: codio/get-branch-name-github-action@v1
+      uses: codio/get-branch-name-github-action@15009_github_deprecate_set_output
     - name: Echo outpus
       run: echo "name=${{ steps.get-branch.outputs.branch }} - tag=${{ steps.get-branch.outputs.tag }}"
