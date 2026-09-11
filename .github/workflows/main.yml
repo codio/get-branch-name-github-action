@@ -5,8 +5,9 @@ jobs:
     runs-on: ubuntu-latest
     name: Test action
     steps:
+    - uses: actions/checkout@v7
     - name: Use action
       id: get-branch
-      uses: codio/get-branch-name-github-action@master
-    - name: Echo outpus
+      uses: ./
+    - name: Echo outputs
       run: echo "name=${{ steps.get-branch.outputs.branch }} - tag=${{ steps.get-branch.outputs.tag }}"

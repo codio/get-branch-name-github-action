@@ -2,13 +2,30 @@
 name: 'Get Branch Name and Tag'
 description: 'Get current branch name and corresponding branch tag if needed.'
 branding:
-    icon: 'activity'  
+    icon: 'activity'
     color: 'white'
 outputs:
   branch:
     description: 'Current branch name'
+    value: ${{ steps.get-branch.outputs.branch }}
   tag:
     description: 'Corresponding branch tag'
+    value: ${{ steps.get-branch.outputs.tag }}
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: composite
+  steps:
+    - id: get-branch
+      shell: bash
+      run: |
+        set -euo pipefail
+        branch="${GITHUB_REF#refs/heads/}"
+        tag=''
+        if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+          tag='latest'
+        elif [[ "${branch}" == 'master' ]]; then
+          tag='master'
+        fi
+        {
+          echo "branch=${branch}"
+          echo "tag=${tag}"
+        } >> "${GITHUB_OUTPUT}"
