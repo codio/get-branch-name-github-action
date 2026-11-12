@@ -8,6 +8,9 @@ outputs:
   branch:
     description: 'Current branch name'
     value: ${{ steps.get-branch.outputs.branch }}
+  docker-safe-branch:
+    description: 'Current branch name usable as a Docker image tag: characters outside [A-Za-z0-9_.-] replaced with "-", leading "." and "-" removed, at most 128 characters'
+    value: ${{ steps.get-branch.outputs.docker-safe-branch }}
   tag:
     description: 'Corresponding branch tag'
     value: ${{ steps.get-branch.outputs.tag }}
@@ -19,6 +22,7 @@ runs:
       run: |
         set -euo pipefail
         branch="${GITHUB_REF#refs/heads/}"
+        docker_safe_branch="$(printf '%s' "${branch}" | sed -E 's/[^A-Za-z0-9_.-]/-/g; s/^[.-]+//' | cut -c1-128)"
         tag=''
         if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
           tag='latest'
@@ -27,5 +31,6 @@ runs:
         fi
         {
           echo "branch=${branch}"
+          echo "docker-safe-branch=${docker_safe_branch}"
           echo "tag=${tag}"
         } >> "${GITHUB_OUTPUT}"
